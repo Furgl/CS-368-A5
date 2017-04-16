@@ -70,9 +70,20 @@ int main() {
 			else
 				cout << "INCORRECT" << endl;
 
+		
+	//Test of addition (+ and +=) operator
+			cout << "Test of the + operator, Value should be 10: ";
+				cout << (n1 + n4);
 
-	// Keeps console open in Visual Studio instead of closing immediately
-	std::cin.get();
+				cout << "Test of the += operator, Value should be 14: ";
+
+				n4 += n4;
+				cout << n4;
+
+
+
+			//MAKE SURE WE REMOVE THIS BEFORE SUBMISSION
+			std::cin.get();
 
     return 0;
 }

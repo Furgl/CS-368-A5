@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <limits.h>
 
 class SmartInteger {
 
@@ -12,21 +13,23 @@ public:
 
 	SmartInteger(int);
 
-	int getValue();
+	int getValue() const;
 
-	bool SmartInteger::operator<(SmartInteger s1);
+	bool operator<(SmartInteger rhs) const;
 
-	bool SmartInteger::operator>(SmartInteger s1);
+	bool operator>(SmartInteger rhs) const;
 
-	bool SmartInteger::operator<=(SmartInteger s1);
+	bool operator<=(SmartInteger rhs) const;
 
-	bool SmartInteger::operator>=(SmartInteger s1);
+	bool operator>=(SmartInteger rhs) const;
 
-	bool SmartInteger::operator==(SmartInteger s1);
+	bool operator==(SmartInteger rhs) const;
 
-	bool SmartInteger::operator!=(SmartInteger s1);
+	bool operator!=(SmartInteger rhs) const;
 
+	friend std::ostream& operator << (std::ostream& os, const SmartInteger& rhs);
 
-	friend std::ostream& operator << (std::ostream& os, SmartInteger& si);
+	SmartInteger operator+(SmartInteger rhs);
+	SmartInteger operator+=(SmartInteger rhs);
 
 };
