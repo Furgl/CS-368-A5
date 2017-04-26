@@ -40,7 +40,9 @@ public:
      * @brief Default Constructor.
      */
     Vector() {
-	// TODO: Implement this function.
+		cap = initialCapacity;
+		length = 0;
+		elems = new T[cap];
     }
 
     /**
@@ -48,7 +50,14 @@ public:
      * @param other The vector from which we should copy from.
      */
     Vector(const Vector &other) {
-	// TODO: Implement this function.
+
+		cap = other.cap;
+		length = other.length;
+		elems = new T[cap];
+
+		for (int i = 0; i < length; i++) {
+			elems[i] = other.elems[i];
+		}
     }
 
     /**
@@ -57,14 +66,29 @@ public:
      * @return A reference to the vector on the LHS.
      */
     Vector &operator=(const Vector &other) {
-	// TODO: Implement this function.
+
+		//Check for self assignment?
+		if (&(cap) == &(other.cap)) 
+			return *this;
+		
+		cap = other.cap;
+		length = other.length;
+
+		//deallocate the old array and create new
+		delete[] elems;
+		elems = new T[cap];
+
+		for (int i = 0; i < length; i++) {
+			elems[i] = other.elems[i];
+		}
+		return *this;
     }
 
     /**
      * @brief Destructor.
      */
     ~Vector(){
-	// TODO: Implement this function.
+		delete[] elems;
     }
 
     typedef T* iterator;
@@ -75,8 +99,8 @@ public:
      * @return An iterator to the first element.
      */
     iterator begin() {
-	// TODO: Implement this function.
-    }
+		return &elems[0];
+	}
 
     /**
      * @brief End iterator.
@@ -84,6 +108,7 @@ public:
      */
     iterator end() {
 	// TODO: Implement this function.
+		return &elems[length];
     }
 
     /**
@@ -92,6 +117,7 @@ public:
      */
     constIterator begin() const {
 	// TODO: Implement this function.
+		return &elems[0];
     }
 
     /**
@@ -100,6 +126,7 @@ public:
      */
     constIterator end() const {
 	// TODO: Implement this function.
+		return &elems[length];
     }
 
     /**
@@ -108,6 +135,7 @@ public:
      */
     std::size_t capacity() const {
 	// TODO: Implement this function.
+		return cap;
     }
 
     /**
@@ -115,8 +143,8 @@ public:
      * @return The number of elements in the container.
      */
     std::size_t size() const {
-	// TODO: Implement this function.
-    }
+		return length;
+	}
 
     /**
      * @brief Adds an element to the end.
@@ -124,7 +152,12 @@ public:
      * @param elem The element to be added.
      */
     void pushBack(T elem) {
-	// TODO: Implement this function.
+
+		//if theres room just add to back
+		if (length >= cap)
+			cap = cap * 2;
+
+		elems[length++] = elem;
     }
 
     /**
@@ -134,7 +167,13 @@ public:
      */
     void popBack() {
 	// TODO: Implement this function.
-    }
+		if (length == 0)
+			return;
+		else {
+			length--;
+			return;
+		}
+	}
 
     /**
      * @brief Increases the capacity of the container to a value greater or equal to new_cap.
@@ -143,7 +182,9 @@ public:
      * @param new_cap new capacity of the container.
      */
     void reserve(std::size_t new_cap) {
-	// TODO: Implement this function.
+		
+		if (new_cap > cap)
+			cap = new_cap;
     }
 
     /**
@@ -153,8 +194,8 @@ public:
      *         No bounds checking is performed.
      */
     T &operator[](std::size_t pos) {
-	// TODO: Implement this function.
-    }
+		return elems[pos];
+	}
 
     /**
      * @brief Const overload of the overloaded array subscripting operator.
@@ -163,8 +204,8 @@ public:
      *         No bounds checking is performed.
      */
     const T &operator[](std::size_t pos) const {
-	// TODO: Implement this function.
-    }
+		return elems[pos];
+	}
 
     /**
      * @brief Access specified element with bounds checking.
@@ -174,6 +215,10 @@ public:
      */
     T &at(std::size_t pos) {
 	// TODO: Implement this function.
+		if (pos >= length)
+			throw out_of_range("ERROR");
+		
+		return elems[pos];
     }
 
     /**
@@ -184,6 +229,10 @@ public:
      */
     const T &at(std::size_t pos) const {
 	// TODO: Implement this function.
+		if (pos >= length)
+			throw out_of_range("ERROR");
+		
+		return elems[pos];
     }
 
     /**
@@ -191,15 +240,18 @@ public:
      * @return true if the container is empty, false otherwise.
      */
     bool empty() const {
-	// TODO: Implement this function.
-    }
+		if (length == 0)
+			return true;
+		else
+			return false;
+	}
 
     /**
      * @brief Removes all elements from the container.
      *        Leaves the capacity of the vector unchanged.
      */
     void clear() {
-	// TODO: Implement this function.
+		length = 0;
     }
 
     /**
@@ -210,6 +262,27 @@ public:
      */
     iterator erase(iterator pos) {
 	// TODO: Implement this function.
+		if (pos == &elems[length - 1]) {
+			length--;
+			return this->end();
+		}
+		
+		//loop to find index to be erased
+		int index = 0;
+		while (index < length) {
+
+			if (pos == &elems[index]) 
+				break;
+
+			index++;
+		}
+
+		//slide over elements left
+		for (int i = index; i < length; i++) {
+			elems[i] = elems[i + 1];
+		}
+		length--;
+		return &elems[index];
     }
 };
 
